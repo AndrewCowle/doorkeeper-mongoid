@@ -19,9 +19,9 @@ module Doorkeeper
     field :revoked_at, type: DateTime
     index({ token: 1 }, unique: true)
 
-    def pkce_supported?
+    def self.pkce_supported?
       respond_to? :code_challenge
     end
-    
+
   end
 end
