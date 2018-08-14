@@ -19,6 +19,13 @@ module DoorkeeperMongodb
 
           before_validation :generate_token, on: :create
         end
+        def uses_pkce?
+          pkce_supported? && code_challenge.present?
+        end
+    
+        def pkce_supported?
+          respond_to? :code_challenge
+        end
 
         module ClassMethods
           # Searches for Doorkeeper::AccessGrant record with the
@@ -33,6 +40,19 @@ module DoorkeeperMongodb
             where(token: token.to_s).first
           end
 
+          def pkce_supported?
+            respond_to? :code_challenge
+          end
+
+          def generate_code_challenge(code_verifier)
+            padded_result = Base64.urlsafe_encode64(Digest::SHA256.digest(code_verifier))
+            padded_result.split('=')[0] # Remove any trailing '='
+          end
+    
+          def pkce_supported?
+            new.pkce_supported?
+          end
+          
         end
 
         private
