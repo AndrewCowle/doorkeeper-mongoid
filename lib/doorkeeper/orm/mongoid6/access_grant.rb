@@ -18,5 +18,10 @@ module Doorkeeper
     field :code_challenge_method, type: String
     field :revoked_at, type: DateTime
     index({ token: 1 }, unique: true)
+
+    def pkce_supported?
+      respond_to? :code_challenge
+    end
+    
   end
 end

@@ -33,10 +33,6 @@ module DoorkeeperMongodb
             where(token: token.to_s).first
           end
 
-          def pkce_supported?
-            respond_to? :code_challenge
-          end
-          
         end
 
         private
