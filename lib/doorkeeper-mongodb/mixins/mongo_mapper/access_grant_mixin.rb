@@ -40,10 +40,6 @@ module DoorkeeperMongodb
             where(token: token.to_s).first
           end
 
-          def pkce_supported?
-            respond_to? :code_challenge
-          end
-
           def generate_code_challenge(code_verifier)
             padded_result = Base64.urlsafe_encode64(Digest::SHA256.digest(code_verifier))
             padded_result.split('=')[0] # Remove any trailing '='
@@ -52,7 +48,10 @@ module DoorkeeperMongodb
           def pkce_supported?
             new.pkce_supported?
           end
-          
+
+          def uses_pkce?
+            pkce_supported? && code_challenge.present?
+          end
         end
 
         private
