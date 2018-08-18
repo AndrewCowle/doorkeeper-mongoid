@@ -23,7 +23,7 @@ module Doorkeeper
       respond_to? :code_challenge
     end
 
-    def self.uses_pkce?
+    def uses_pkce?
       pkce_supported? && code_challenge.present?
     end
 
