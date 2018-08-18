@@ -23,6 +23,7 @@ module DoorkeeperMongodb
           end
 
           belongs_to :application, belongs_to_opts
+          belongs_to :user, class_name: 'User', foreign_key: 'resource_owner_id'
 
           validates :token, presence: true, uniqueness: true
           validates :refresh_token, uniqueness: true, if: :use_refresh_token?
