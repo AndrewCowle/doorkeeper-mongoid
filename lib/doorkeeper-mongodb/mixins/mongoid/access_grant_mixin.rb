@@ -28,6 +28,15 @@ module DoorkeeperMongodb
           validates :token, uniqueness: true
 
           before_validation :generate_token, on: :create
+
+          def uses_pkce?
+            pkce_supported? && code_challenge.present?
+          end
+      
+          def pkce_supported?
+            respond_to? :code_challenge
+          end
+          
         end
 
         module ClassMethods
